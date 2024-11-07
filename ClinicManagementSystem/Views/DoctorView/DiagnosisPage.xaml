@@ -35,7 +35,7 @@
 
             <StackPanel Orientation="Horizontal" Spacing="10">
                 <TextBlock Text="Symptom:" FontWeight="SemiBold" Foreground="Gray"/>
-                <TextBlock Text="{Binding MedicalExaminationForm.Symptom}" FontWeight="Normal" TextWrapping="Wrap"/>
+                <TextBlock Text="{Binding MedicalExaminationForm.Symptoms}" FontWeight="Normal" TextWrapping="Wrap"/>
             </StackPanel>
 
             <!-- Nhập liệu chẩn đoán -->

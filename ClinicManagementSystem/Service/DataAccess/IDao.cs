@@ -32,6 +32,6 @@ namespace ClinicManagementSystem.Service.DataAccess
         (int, string, string, string, string, string) Authentication (string username, string password);
         bool CreateUser( User user);
         bool CheckUserExists(string username);
-        bool UpdateUser(User info,string entropyUserEdit);
+        bool UpdateUser(User info);
     }
 }

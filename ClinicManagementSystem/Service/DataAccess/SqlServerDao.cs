@@ -48,7 +48,7 @@ namespace ClinicManagementSystem.Service.DataAccess
 
 
             var sql = $"""
-            SELECT count(*) over() as Total, id, name, role, username,password,phone,birthday,address,gender,entropy
+            SELECT count(*) over() as Total, id, name, role, username,password,phone,birthday,address,gender
             FROM EndUser
             WHERE Name like @Keyword
             {sortString} 
@@ -58,7 +58,7 @@ namespace ClinicManagementSystem.Service.DataAccess
             AddParameters(command, ("@Skip", (page - 1) * rowsPerPage), ("@Take", rowsPerPage), ("@Keyword", $"%{keyword}%"));
             var reader = command.ExecuteReader();
             int count = -1;
-            string entropy = "";
+            //string entropy = "";
             while (reader.Read())
             {
                 if (count == -1)
@@ -74,8 +74,9 @@ namespace ClinicManagementSystem.Service.DataAccess
                 user.birthday = (DateTime)reader["birthday"];
                 user.address = (string)reader["address"];
                 user.phone = (string)reader["phone"];
-                entropy = (string)reader["entropy"];
-                user.password = DecryptionPassword((string)reader["password"], entropy);
+                //entropy = (string)reader["entropy"];
+                //user.password = DecryptionPassword((string)reader["password"], entropy);
+                user.password = (string)reader["password"];
                 result.Add(user);
             }
 
@@ -186,12 +187,12 @@ namespace ClinicManagementSystem.Service.DataAccess
             connection.Close();
             return success;
         }
-        public bool UpdateUser(User info, string entropyUserEdit)
+        public bool UpdateUser(User info)
         {
             var connectionString = GetConnectionString();
             SqlConnection connection = new SqlConnection(connectionString);
             connection.Open();
-            var sql = "update EndUser set name=@name, role=@role,username=@username,password=@password,phone=@phone,birthday=@birthday,address=@address,gender=@gender,entropy=@entropy where id=@id";
+            var sql = "update EndUser set name=@name, role=@role,username=@username,password=@password,phone=@phone,birthday=@birthday,address=@address,gender=@gender where id=@id";
             var command = new SqlCommand(sql, connection);
             AddParameters(command,
                 ("@id", info.id),
@@ -202,8 +203,8 @@ namespace ClinicManagementSystem.Service.DataAccess
                 ("@phone", info.phone),
                 ("@birthday", info.birthday),
                 ("@address", info.address),
-                ("@gender", info.gender),
-                ("@entropy", entropyUserEdit)
+                ("@gender", info.gender)
+                //("@entropy", entropyUserEdit)
                 );
             int count = command.ExecuteNonQuery();
             bool success = count == 1;
