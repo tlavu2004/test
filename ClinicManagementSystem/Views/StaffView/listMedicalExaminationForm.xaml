@@ -19,7 +19,7 @@
                     <TextBlock Width="100" Margin="20" Text="{x:Bind StaffId}" ></TextBlock>
                     <TextBlock Width="140" Margin="20" Text="{x:Bind Time}" ></TextBlock>
                     <TextBlock Width="100" Margin="20" Text="{x:Bind DoctorId}" ></TextBlock>
-                    <TextBlock Width="100" Margin="20" Text="{x:Bind Symptoms}" ></TextBlock>
+                    <TextBlock Width="auto" Margin="20" Text="{x:Bind Symptoms}" ></TextBlock>
                 </StackPanel>
             </Border>
         </DataTemplate>
@@ -28,17 +28,17 @@
     <Grid VerticalAlignment="Stretch">
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
-            <RowDefinition Height="70" />
+            <RowDefinition Height="70"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="3*" />
+            <!--<ColumnDefinition Width="3*" />-->
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
 
 
         <StackPanel>
 
-            <StackPanel Margin ="35,0,0,20"  Orientation="Horizontal" HorizontalAlignment="Left">
+            <StackPanel Margin ="35,20,0,20"  Orientation="Horizontal" HorizontalAlignment="Left">
                 <TextBlock FontWeight="Bold" FontSize="20" Width="140">ID</TextBlock>
                 <TextBlock FontWeight="Bold" FontSize="20"  Width="140">Patient ID</TextBlock>
                 <TextBlock FontWeight="Bold" FontSize="20"  Width="140">Staff ID</TextBlock>

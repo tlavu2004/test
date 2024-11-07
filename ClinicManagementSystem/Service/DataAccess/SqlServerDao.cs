@@ -110,29 +110,33 @@ namespace ClinicManagementSystem.Service.DataAccess
             int id = 0;
             string name = "";
             string role = "";
-            string encryptedPasswordInBase64 = "";
+            //string encryptedPasswordInBase64 = "";
+            string passwordFromDB = "";
+
             string phone = "";
             DateTime birthday;
             string gender;
             string address;
-            string entropyInBase64 = "";
+            //string entropyInBase64 = "";
             if (reader.Read())
             {
                 id = (int)reader["id"];
                 name = (string)reader["name"];
                 role = reader["role"].ToString();
-                encryptedPasswordInBase64 = reader["password"].ToString();
+                //encryptedPasswordInBase64 = reader["password"].ToString();
+                passwordFromDB = reader["password"].ToString();
+
                 phone = reader["phone"].ToString();
                 birthday = (DateTime)reader["birthday"];
                 gender = reader["gender"].ToString();
                 address = reader["address"].ToString();
-                entropyInBase64 = reader["entropy"].ToString();
+                //entropyInBase64 = reader["entropy"].ToString();
                 connection.Close();
-                var encryptedPasswordInBytes = Convert.FromBase64String(encryptedPasswordInBase64);
-                var entropyInBytes = Convert.FromBase64String(entropyInBase64);
-                var passwordInBytes = ProtectedData.Unprotect(encryptedPasswordInBytes, entropyInBytes, DataProtectionScope.CurrentUser);
-                var passwordGetFromDatabase = Encoding.UTF8.GetString(passwordInBytes);
-                if (password == passwordGetFromDatabase)
+                //var encryptedPasswordInBytes = Convert.FromBase64String(encryptedPasswordInBase64);
+                //var entropyInBytes = Convert.FromBase64String(entropyInBase64);
+                //var passwordInBytes = ProtectedData.Unprotect(encryptedPasswordInBytes, entropyInBytes, DataProtectionScope.CurrentUser);
+                //var passwordGetFromDatabase = Encoding.UTF8.GetString(passwordInBytes);
+                if (password == passwordFromDB)
                 {
                     return (id, name, role, phone, gender, address);
                 }
@@ -143,7 +147,7 @@ namespace ClinicManagementSystem.Service.DataAccess
                 connection.Close();
                 return (0, "", "", "", "", "");
             }
-
+            //return (0, "", "admin", "", "", "");
         }
         public bool CheckUserExists(string username)
         {
@@ -158,23 +162,23 @@ namespace ClinicManagementSystem.Service.DataAccess
             int count = (int)command.ExecuteScalar();
             return count > 0;
         }
-        public bool CreateUser(User user, string password,string entropy)
+        public bool CreateUser(User user)
         {
             var connectionString = GetConnectionString();
             SqlConnection connection = new SqlConnection(connectionString);
             connection.Open();
-            string query = $"insert into EndUser(name,role,username,password,phone,birthday,address,gender,entropy) values(@name,@role,@username,@password,@phone,@birthday,@address,@gender,@entropy) ";
+            string query = $"insert into EndUser(name,role,username,password,phone,birthday,address,gender) values(@name,@role,@username,@password,@phone,@birthday,@address,@gender) ";
             var command = new SqlCommand(query, connection);
             AddParameters(command, 
                 ("@name", user.name),
                 ("@role", user.role),
                 ("@username", user.username),
-                ("@password", password),
+                ("@password", user.password),
                 ("@phone", user.phone),
                 ("@birthday", user.birthday),
                 ("@address", user.address),
-                ("@gender", user.gender),
-                ("@entropy", entropy)
+                ("@gender", user.gender)
+                //("@entropy", entropy)
                 );
 
             int count = command.ExecuteNonQuery();

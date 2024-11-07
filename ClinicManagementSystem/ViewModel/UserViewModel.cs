@@ -34,8 +34,8 @@ namespace ClinicManagementSystem.ViewModel
                 }
                 else
                 {
-                var (encryptedPasswordInBase64, entropyInBase64) = EncryptPassword(user.password); 
-                var success=_dao.CreateUser(user,encryptedPasswordInBase64,entropyInBase64);
+                //var (encryptedPasswordInBase64, entropyInBase64) = EncryptPassword(user.password); 
+                var success=_dao.CreateUser(user);
                 return success?"":"Create false";
                 }    
             }
